@@ -13,6 +13,7 @@ RSpec.describe ArticlesController do
             get '/articles'
             # body = json
             # pp body
+            pp json_data
             expect(json_data.length).to eq(1)
             expected = json_data.first
             
