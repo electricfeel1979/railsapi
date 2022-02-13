@@ -69,8 +69,44 @@ describe ArticlesController, type: :controller do
       it_behaves_like 'forbidden_requests'
     end
 
-    context 'when invalid parameters provided' do
+    context 'when authorized' do
+        let(:user) {create :user}
+        let(:access_token) {user.create_access_token}
+        
+        before { request.headers['authorization'] = "Bearer #{access_token.token}" }
+    
+        context 'when invalid parameters provided' do
+            let(:invalid_attribute) do
+                {
+                    data: {
+                      attributes: {
+                        tittle: '',
+                        content: ''
+                      }
+                    }
+                  }
+            end
 
+            subject {post :create, params: invalid_attribute }
+
+            it 'should return 422 status code' do
+                subject
+                expect(response).to have_http_status(:unprocessable_entity)
+            end
+
+            it 'should return proper error json' do
+                subject
+                expect(json[:errors]).to include(
+                    :content => ["can't be blank"],
+                    :slug => ["can't be blank"],
+                    :title => ["can't be blank"]
+                )
+            end
+        end
+
+        context 'when success request sent' do
+
+        end
     end
   end
 end
