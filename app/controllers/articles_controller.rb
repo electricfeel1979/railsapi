@@ -15,12 +15,20 @@ class ArticlesController < ApplicationController
 
     def create
         article = Article.new(article_params)
-        if article.valid?
-            #we will figure that out
-        else
-            render json: {:article => article, :errors => article.errors}, 
-            status: :unprocessable_entity
-        end
+        article.save!
+        render json: article, status: :created
+    rescue
+        render json: {:article => article, :errors => article.errors}, 
+        status: :unprocessable_entity
+    end
+
+    def update
+        article = Article.find(params[:id])
+        article.update!(article_params)
+        render json: article, status: :ok
+    rescue
+        render json: {:article => article, :errors => article.errors}, 
+        status: :unprocessable_entity
     end
 
     def serializer
@@ -30,6 +38,8 @@ class ArticlesController < ApplicationController
     private 
 
     def article_params
+        params.require(:data).require(:attributes).
+            permit(:title, :content, :slug) ||
         ActionController::Parameters.new
     end
 end
