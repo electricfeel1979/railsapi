@@ -26,15 +26,11 @@ describe RegistrationsController do
 
       it 'should return error messages in response body' do
         subject
-        expect(json['errors']).to include(
-          {
-            'source' => { 'pointer' => '/data/attributes/login' },
-            'detail' => "can't be blank"
-          },
-          {
-            'source' => { 'pointer' => '/data/attributes/password' },
-            'detail' => "can't be blank"
-          }
+        expect(json[:errors]).to include(
+            :login => ["can't be blank"],
+            :password => ["can't be blank"],
+            # :detail => "can't be blank",
+            # 'source' => { 'pointer' => '/data/attributes/login' },
         )
       end
     end

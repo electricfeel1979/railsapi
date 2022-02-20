@@ -5,6 +5,9 @@ class RegistrationsController < ApplicationController
       user = User.new(registration_params.merge(provider: 'standard'))
       user.save!
       render json: user, status: :created
+    rescue ActiveRecord::RecordInvalid
+          render json: {:user => user, :errors => user.errors}, 
+          status: :unprocessable_entity
     end
   
     private
