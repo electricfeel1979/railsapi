@@ -17,5 +17,5 @@ class RegistrationsController < ApplicationController
         permit(:login, :password) ||
         ActionController::Parameters.new
     end
-  end
+end
   
