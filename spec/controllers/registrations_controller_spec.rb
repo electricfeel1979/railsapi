@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe RegistrationsController do
@@ -21,16 +23,16 @@ describe RegistrationsController do
       end
 
       it 'should not create a user' do
-        expect{ subject }.not_to change{ User.count }
+        expect { subject }.not_to change { User.count }
       end
 
       it 'should return error messages in response body' do
         subject
         expect(json[:errors]).to include(
-            :login => ["can't be blank"],
-            :password => ["can't be blank"],
-            # :detail => "can't be blank",
-            # 'source' => { 'pointer' => '/data/attributes/login' },
+          login: ["can't be blank"],
+          password: ["can't be blank"]
+          # :detail => "can't be blank",
+          # 'source' => { 'pointer' => '/data/attributes/login' },
         )
       end
     end
@@ -54,7 +56,7 @@ describe RegistrationsController do
 
       it 'should create a user' do
         expect(User.exists?(login: 'jsmith')).to be_falsey
-        expect{ subject }.to change{ User.count }.by(1)
+        expect { subject }.to change { User.count }.by(1)
         expect(User.exists?(login: 'jsmith')).to be_truthy
       end
 
@@ -62,10 +64,10 @@ describe RegistrationsController do
         subject
         pp json
         expect(json).to include(
-            :login => 'jsmith',
-            :avatar_url => nil,
-            :url => nil,
-            :name => nil
+          login: 'jsmith',
+          avatar_url: nil,
+          url: nil,
+          name: nil
         )
       end
     end

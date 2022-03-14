@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe CommentsController, type: :controller do
   let(:article) { create :article }
 
-  describe "GET #index" do
+  describe 'GET #index' do
     subject { get :index, params: { article_id: article.id } }
 
-    it "returns a success response" do
+    it 'returns a success response' do
       subject
       expect(response).to have_http_status(:ok)
     end
@@ -31,8 +33,8 @@ RSpec.describe CommentsController, type: :controller do
       comment = create :comment, article: article
       subject
       expect(json_data.first[:attributes]).to eq(
-          :content => comment.content,
-          :id => comment.id
+        content: comment.content,
+        id: comment.id
       )
     end
 
@@ -46,7 +48,7 @@ RSpec.describe CommentsController, type: :controller do
     end
   end
 
-  describe "POST #create" do
+  describe 'POST #create' do
     context 'when not authorized' do
       subject { post :create, params: { article_id: article.id } }
 
@@ -65,7 +67,7 @@ RSpec.describe CommentsController, type: :controller do
 
       before { request.headers['authorization'] = "Bearer #{access_token.token}" }
 
-      context "with valid params" do
+      context 'with valid params' do
         subject do
           post :create, params: valid_attributes.merge(article_id: article.id)
         end
@@ -75,19 +77,19 @@ RSpec.describe CommentsController, type: :controller do
           expect(response).to have_http_status(:created)
         end
 
-        it "creates a new Comment" do
+        it 'creates a new Comment' do
           expect { subject }.to change(article.comments, :count).by(1)
         end
 
-        it "renders a JSON response with the new comment" do
+        it 'renders a JSON response with the new comment' do
           subject
           expect(json).to include(
-            :content => "My awesome comment for article",
+            content: 'My awesome comment for article'
           )
         end
       end
 
-      context "with invalid params" do
+      context 'with invalid params' do
         subject do
           post :create, params: invalid_attributes.merge(article_id: article.id)
         end
@@ -97,14 +99,13 @@ RSpec.describe CommentsController, type: :controller do
           expect(response).to have_http_status(:unprocessable_entity)
         end
 
-        it "renders a JSON response with errors for the new comment" do
+        it 'renders a JSON response with errors for the new comment' do
           subject
           expect(json[:errors]).to include({
-            :content => ["can't be blank"],
-          })
+                                             content: ["can't be blank"]
+                                           })
         end
       end
     end
-
   end
 end

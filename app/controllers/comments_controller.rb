@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class CommentsController < ApplicationController
   include Paginable
-  
+
   skip_before_action :authorize!, only: [:index]
   before_action :load_article
 
@@ -19,9 +21,9 @@ class CommentsController < ApplicationController
 
     @comment.save!
     render json: @comment, status: :created, location: @article
-  rescue
-    render json: {:comment => @comment, :errors => @comment.errors},
-      status: :unprocessable_entity
+  rescue StandardError
+    render json: { comment: @comment, errors: @comment.errors },
+           status: :unprocessable_entity
   end
 
   def serializer
@@ -35,8 +37,8 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:data).require(:attributes).
-      permit(:content) ||
+    params.require(:data).require(:attributes)
+          .permit(:content) ||
       ActionController::Parameters.new
   end
 end

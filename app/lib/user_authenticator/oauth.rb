@@ -1,47 +1,50 @@
-class UserAuthenticator::Oauth < UserAuthenticator
+# frozen_string_literal: true
+
+module UserAuthenticator
+  class Oauth < UserAuthenticator
     class AuthenticationError < StandardError; end
 
     attr_reader :user
 
     def initialize(code)
-        @code = code
+      @code = code
     end
 
     def perform
-        raise AuthenticationError if code.blank?
-        raise AuthenticationError if token.try(:error).present?
-        prepare_user
+      raise AuthenticationError if code.blank?
+      raise AuthenticationError if token.try(:error).present?
+
+      prepare_user
     end
 
     private
 
     def client
-        @client ||= Octokit::Client.new(
-            client_id: ENV['GITHUB_CLIENT_ID'],
-            client_secret: ENV['GITHUB_CLIENT_SECRET']
-        )
+      @client ||= Octokit::Client.new(
+        client_id: ENV['GITHUB_CLIENT_ID'],
+        client_secret: ENV['GITHUB_CLIENT_SECRET']
+      )
     end
 
     def token
-        @token ||= client.exchange_code_for_token(code)
+      @token ||= client.exchange_code_for_token(code)
     end
 
     def user_data
-        @user_data ||= Octokit::Client.new(:access_token => token).user.to_h.slice(:login, :avatar_url, :url, :name)
+      @user_data ||= Octokit::Client.new(access_token: token).user.to_h.slice(:login, :avatar_url, :url, :name)
     end
 
     def prepare_user
-        @user = if User.exists?(login: user_data[:login])
-            User.find_by(login: user_data[:login])
-        else
-            User.create(user_data.merge(provider: 'github'))
-        end
+      @user = if User.exists?(login: user_data[:login])
+                User.find_by(login: user_data[:login])
+              else
+                User.create(user_data.merge(provider: 'github'))
+              end
     end
 
-
     attr_reader :code
+  end
 end
-
 
 # client = Octokit::Client.new(client_id: 'e37f7935ba4983e80da2', client_se
 #     cret: 'fe78d02450d4c6f0bf60e9841f86da21004d9839')
