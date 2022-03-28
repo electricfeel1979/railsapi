@@ -73,5 +73,5 @@ end
 gem 'jsom-pagination'
 gem 'jsonapi-serializer'
 gem 'jsonapi_errors_handler'
-gem 'bcrypt'gem 'octokit', '~> 4.0'
-
+gem 'bcrypt'
+gem 'octokit', '~> 4.0'

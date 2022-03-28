@@ -15,7 +15,8 @@ class ApplicationController < ActionController::Base
   end
 
   def access_token
-    provided_token = request.authorization&.gsub(/\ABearer\s/, '')
+    # & is use as an if else shortcut to return nil else proceed with gsub
+    provided_token = request.authorization&.gsub(/\ABearer\s/, '') 
     @access_token = AccessToken.find_by(token: provided_token)
   end
 

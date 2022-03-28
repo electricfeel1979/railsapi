@@ -15,6 +15,9 @@ RSpec.describe Article, type: :model do
     end
 
     it 'has an invalid title' do
+      # article.title = ''
+      # expect(article).not_to be_valid
+      # expect(article.errors[:title]).to include("can't be blank")
     end
 
     it 'has an invalid content' do

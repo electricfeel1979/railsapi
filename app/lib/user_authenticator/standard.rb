@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-module UserAuthenticator
-  class Standard < UserAuthenticator
+class UserAuthenticator::Standard
     class AuthenticationError < StandardError; end
 
     attr_reader :user
@@ -25,5 +24,5 @@ module UserAuthenticator
     private
 
     attr_reader :login, :password
-  end
 end
+

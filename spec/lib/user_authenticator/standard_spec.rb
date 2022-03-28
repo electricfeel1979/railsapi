@@ -40,3 +40,4 @@ describe UserAuthenticator::Standard do
     end
   end
 end
+

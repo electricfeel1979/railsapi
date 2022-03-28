@@ -11,6 +11,7 @@ class UserAuthenticator
                      end
   end
 
+  
   def perform
     authenticator.perform
 

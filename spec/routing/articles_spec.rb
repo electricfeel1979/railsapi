@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe '/articles routes' do
   it 'should route to articles#index' do
     expect(get('/articles')).to route_to('articles#index')
+    #or expect(get('/articles')).to route_to(controller: 'articles', action: 'index') 
   end
 
   it 'should route to articles show' do

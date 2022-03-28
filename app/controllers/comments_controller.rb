@@ -42,3 +42,5 @@ class CommentsController < ApplicationController
       ActionController::Parameters.new
   end
 end
+
+#location is just the url of the comment from the method show

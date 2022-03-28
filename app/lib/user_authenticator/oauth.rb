@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-module UserAuthenticator
-  class Oauth < UserAuthenticator
+class UserAuthenticator::Oauth
     class AuthenticationError < StandardError; end
 
     attr_reader :user
@@ -43,7 +42,6 @@ module UserAuthenticator
     end
 
     attr_reader :code
-  end
 end
 
 # client = Octokit::Client.new(client_id: 'e37f7935ba4983e80da2', client_se
